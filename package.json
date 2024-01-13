@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Success: everything is OK\" && exit 1",
-    "exec": "node index.js"
+    "exec": "rm -rf ./games.json; node index.js"
   },
   "keywords": [
     "js",
