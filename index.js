@@ -11,8 +11,15 @@ const dataBaseId = "ef46ed8046494f3c977f38f24a595ecb"
 const urlIGDBAuth =  `https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=${grantType}`
 
 let gamesSlug = [
-    'midnight-club-3-dub-edition', 
-    'castlevania-symphony-of-the-night'
+    'final-fantasy-tactics', 
+    'grand-theft-auto-san-andreas',
+    'the-elder-scrolls-v-skyrim',
+    'call-of-duty-modern-warfare-2',
+    'shadow-of-the-colossus--2',
+    'hollow-knight',
+    'guitar-hero-ii',
+    'elden-ring'
+
 ]
 let gamesMetada = []
 
@@ -49,7 +56,7 @@ async function main(){
                 url: 'https://api.igdb.com/v4/games',
                 data: paylaod
             }).then(async function (response) {
-                console.log(response.data)
+                
                 let gameMetada = {
                     name: response.data[0].name,
                     cover: `https://images.igdb.com/igdb/image/upload/t_cover_big/${response.data[0].cover.image_id}.png`
