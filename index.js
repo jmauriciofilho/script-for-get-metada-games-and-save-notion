@@ -39,7 +39,7 @@ async function main(){
                 'Client-ID': clientId,
                 'Authorization': `Bearer ${authCredentials["access_token"]}`
             }
-        
+    
             let paylaod = `fields\
                 name,\
                 genres.name,\
