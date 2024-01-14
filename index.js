@@ -10,7 +10,10 @@ const dataBaseId = "ef46ed8046494f3c977f38f24a595ecb"
 
 const urlIGDBAuth =  `https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=${grantType}`
 
-let gamesSlug = ['final-fantasy--1', 'super-mario-bros-wonder']
+let gamesSlug = [
+    'midnight-club-3-dub-edition', 
+    'castlevania-symphony-of-the-night'
+]
 let gamesMetada = []
 
 console.log("Init...")
@@ -46,7 +49,7 @@ async function main(){
                 url: 'https://api.igdb.com/v4/games',
                 data: paylaod
             }).then(async function (response) {
-                
+                console.log(response.data)
                 let gameMetada = {
                     name: response.data[0].name,
                     cover: `https://images.igdb.com/igdb/image/upload/t_cover_big/${response.data[0].cover.image_id}.png`
@@ -58,12 +61,103 @@ async function main(){
                 });
         
                 gameMetada.genres = genres
-                gameMetada.franchise = response.data[0].franchises[0].name
-                gameMetada.developer = response.data[0].involved_companies[0].name
+                gameMetada.franchise = response.data[0].franchises ? response.data[0].franchises[0].name : ""
+                gameMetada.developer = response.data[0].involved_companies[0].company.name
                 gameMetada.release_date = response.data[0].release_dates[0].y
                 gameMetada.release_platform = response.data[0].platforms[0].name
     
-                gamesMetada.push(gameMetada) 
+                gamesMetada.push(gameMetada)
+
+                const url = "https://api.notion.com/v1/pages/"
+
+                const header = {
+                    "Authorization": "Bearer " + notionKey,
+                    "Content-Type": "application/json",
+                    "Notion-Version": "2022-06-28"
+                }
+
+                let pageObj = {
+                    "parent": { "database_id": dataBaseId },
+                    "properties": {
+                        "Capa": {
+                            "files": [
+                                {
+                                    "type": "external",
+                                    "name": "image cover",
+                                    "external": {
+                                        "url": gameMetada.cover
+                                    }
+                                }
+                            ]
+                        },
+                        "Nome": { 
+                            "title":[
+                                {
+                                    "text": {
+                                        "content": gameMetada.name
+                                    }
+                                }
+                            ]
+                        },
+                        "Gêneros": {
+                            "rich_text": [
+                                {
+                                    "type": "text",
+                                    "text":{
+                                        "content": gameMetada.genres.toString()
+                                    }
+                                }
+                            ]
+                        },
+                        "Franquia": {
+                            "rich_text": [
+                                {
+                                    "type": "text",
+                                    "text":{
+                                        "content": gameMetada.franchise
+                                    }
+                                }
+                            ]
+                        },
+                        "Desenvolvedoras": {
+                            "rich_text": [
+                                {
+                                    "type": "text",
+                                    "text":{
+                                        "content": gameMetada.developer
+                                    }
+                                }
+                            ]
+                        },
+                        "Data de Lançamento": {
+                            "rich_text": [
+                                {
+                                    "type": "text",
+                                    "text":{
+                                        "content": gameMetada.release_date.toString()
+                                    }
+                                }
+                            ]
+                        },
+                        "Plataforma": {
+                            "rich_text": [
+                                {
+                                    "type": "text",
+                                    "text":{
+                                        "content": gameMetada.release_platform
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                };
+
+                await axios({
+                    headers: header,
+                    method: 'post',
+                    url: url,
+                    data: pageObj
+                });
             });
         });
     };
@@ -81,84 +175,3 @@ async function main(){
         console.log("Script completed successfully!");
     });
 }
-
-
-
-
-
-
-
-
-//====================
-// const url = "https://api.notion.com/v1/pages/"
-
-// const header = {
-//     "Authorization": "Bearer " + notionKey,
-//     "Content-Type": "application/json",
-//     "Notion-Version": "2022-06-28"
-// }
-
-// let pageObj = {
-//     "parent": { "database_id": dataBaseId },
-//     "properties": {
-//         "Capa": {
-//             "files": [
-//                 {
-//                     "type": "external",
-//                     "name": "image cover",
-//                     "external": {
-//                         "url": gameMetada.cover
-//                     }
-//                 }
-//             ]
-//         },
-//         "Nome": { 
-//             "title":[
-//                 {
-//                     "text": {
-//                         "content": gameMetada.name
-//                     }
-//                 }
-//             ]
-//         },
-//         "Gêneros": {
-//             "rich_text": [
-//                 {
-//                     "type": "text",
-//                     "text":{
-//                         "content": gameMetada.genres.toString()
-//                     }
-//                 }
-//             ]
-//         },
-//         "Franquia": {
-//             "rich_text": [
-//                 {
-//                     "type": "text",
-//                     "text":{
-//                         "content": gameMetada.franchises.toString()
-//                     }
-//                 }
-//             ]
-//         },
-//         "Desenvolvedoras": {
-//             "rich_text": [
-//                 {
-//                     "type": "text",
-//                     "text":{
-//                         "content": gameMetada.developers.toString()
-//                     }
-//                 }
-//             ]
-//         }
-//     }
-// }
-
-// axios({
-//     headers: header,
-//     method: 'post',
-//     url: url,
-//     data: pageObj
-// }).then(function (response) {
-//     console.log("Script completed successfully!")
-// });
