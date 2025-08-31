@@ -11,13 +11,18 @@ const dataBaseId = "ef46ed8046494f3c977f38f24a595ecb"
 const urlIGDBAuth =  `https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=${grantType}`
 
 let gamesSlug = [
-    'souldiers',
-    'cult-of-the-lamb',
-    'captain-commando',
-    'x-men-mutant-apocalypse',
-    'little-kitty-big-city',
-    'evil-west',
-    'super-bomberman'
+    // 'clair-obscur-expedition-33',
+    // 'monster-hunter-wilds',
+    // 'final-fantasy-vii',
+    // 'dragon-ball-advanced-adventure',
+    // 'castlevania-aria-of-sorrow',
+    // 'nine-sols',
+    // 'ender-lilies-quietus-of-the-knights',
+    // 'indiana-jones-and-the-great-circle',
+    // 'axiom-verge',
+    // 'maui-mallard-in-cold-shadow--1',
+    // 'castlevania',
+    'monument-valley-2'
 ]
 let gamesMetada = []
 
@@ -54,6 +59,7 @@ async function main(){
                 url: 'https://api.igdb.com/v4/games',
                 data: paylaod
             }).then(async function (response) {
+                console.log(response.data)
                 
                 let gameMetada = {
                     name: response.data[0].name,
@@ -61,6 +67,7 @@ async function main(){
                 }
         
                 let genres = []
+                
                 await response.data[0].genres.forEach(function(element, i) {
                     genres[i] = element.name
                 });
