@@ -11,15 +11,13 @@ const dataBaseId = "ef46ed8046494f3c977f38f24a595ecb"
 const urlIGDBAuth =  `https://id.twitch.tv/oauth2/token?client_id=${clientId}&client_secret=${clientSecret}&grant_type=${grantType}`
 
 let gamesSlug = [
-    'final-fantasy-tactics', 
-    'grand-theft-auto-san-andreas',
-    'the-elder-scrolls-v-skyrim',
-    'call-of-duty-modern-warfare-2',
-    'shadow-of-the-colossus--2',
-    'hollow-knight',
-    'guitar-hero-ii',
-    'elden-ring'
-
+    'souldiers',
+    'cult-of-the-lamb',
+    'captain-commando',
+    'x-men-mutant-apocalypse',
+    'little-kitty-big-city',
+    'evil-west',
+    'super-bomberman'
 ]
 let gamesMetada = []
 
